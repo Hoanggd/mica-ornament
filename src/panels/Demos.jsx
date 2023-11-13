@@ -1,6 +1,23 @@
 import React, { useState } from "react";
 const fs = require("uxp").storage.localFileSystem;
 const fileTypes = require("uxp").storage.fileTypes;
+const app = require("photoshop").app;
+const core = require("photoshop").core;
+
+export const openFileAsDocument = async (file) => {
+  async function openDocument() {
+    await app.open(file);
+    // Todo
+    // handle main logic here
+  }
+  try {
+    return await core.executeAsModal(openDocument, {
+      command: "opening file",
+    });
+  } catch (error) {
+    console.log("error opening file as document", error);
+  }
+};
 
 export const Demos = () => {
   const [selectedFiles, setSelectedFiles] = useState();
@@ -12,6 +29,10 @@ export const Demos = () => {
       types: fileTypes.images,
     });
     setSelectedFiles(files);
+  };
+
+  const handleCreate = () => {
+    selectedFiles.forEach((file) => openFileAsDocument(file));
   };
 
   return (
@@ -48,7 +69,11 @@ export const Demos = () => {
           </sp-body>
         </div>
       </div>
-      <sp-button disabled={undefined} style={{ marginTop: 20, width: "100%" }}>
+      <sp-button
+        onClick={handleCreate}
+        disabled={undefined}
+        style={{ marginTop: 20, width: "100%" }}
+      >
         Create
       </sp-button>
     </div>
