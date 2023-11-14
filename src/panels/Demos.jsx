@@ -22,7 +22,9 @@ export const Demos = () => {
   return (
     <div>
       <div>
-        <sp-heading size="XXS">Files </sp-heading>
+        <sp-heading size="XXS" style={{ margin: 0 }}>
+          Files{" "}
+        </sp-heading>
         <div style={{ display: "flex", alignItems: "center", marginTop: 8 }}>
           <sp-button
             size="s"

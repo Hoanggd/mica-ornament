@@ -1,3 +1,5 @@
+import { createStroke } from "./create-stroke";
+
 const app = require("photoshop").app;
 const core = require("photoshop").core;
 const constants = require("photoshop").constants;
@@ -54,6 +56,9 @@ export const createSafeZoneFromPng = async (file) => {
     currentDocument.guides.add(constants.Direction.VERTICAL, SIZE * 2);
     currentDocument.guides.add(constants.Direction.VERTICAL, SIZE * 2.5);
     currentDocument.guides.add(constants.Direction.VERTICAL, SIZE * 3);
+
+    // 5. Create stroke
+    await createStroke();
   }
 
   try {
