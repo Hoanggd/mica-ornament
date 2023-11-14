@@ -1,23 +1,7 @@
 import React, { useState } from "react";
+import { createSafeZoneFromPng } from "./libs/create-safezone";
 const fs = require("uxp").storage.localFileSystem;
 const fileTypes = require("uxp").storage.fileTypes;
-const app = require("photoshop").app;
-const core = require("photoshop").core;
-
-export const openFileAsDocument = async (file) => {
-  async function openDocument() {
-    await app.open(file);
-    // Todo
-    // handle main logic here
-  }
-  try {
-    return await core.executeAsModal(openDocument, {
-      command: "opening file",
-    });
-  } catch (error) {
-    console.log("error opening file as document", error);
-  }
-};
 
 export const Demos = () => {
   const [selectedFiles, setSelectedFiles] = useState();
@@ -32,7 +16,7 @@ export const Demos = () => {
   };
 
   const handleCreate = () => {
-    selectedFiles.forEach((file) => openFileAsDocument(file));
+    selectedFiles.forEach((file) => createSafeZoneFromPng(file));
   };
 
   return (
