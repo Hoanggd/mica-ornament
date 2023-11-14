@@ -1,10 +1,13 @@
-import { createStroke } from "./create-stroke";
+import { createStrokeAndAddRect } from "./create-stroke";
 
 const app = require("photoshop").app;
 const core = require("photoshop").core;
 const constants = require("photoshop").constants;
 
 const SIZE = 1772;
+const findLayerByName = (name) => {
+  return app.activeDocument.layers.find((item) => item.name === name);
+};
 
 export const createSafeZoneFromPng = async (file) => {
   async function openDocument() {
@@ -58,7 +61,38 @@ export const createSafeZoneFromPng = async (file) => {
     currentDocument.guides.add(constants.Direction.VERTICAL, SIZE * 3);
 
     // 5. Create stroke
-    await createStroke();
+    await createStrokeAndAddRect();
+
+    // 6. Find hole position
+    const layer1 = findLayerByName("Layer 1");
+    const layer2 = findLayerByName("Layer 1 copy");
+    const rectangle = findLayerByName("Rectangle 1");
+
+    layer1.visible = false;
+    layer2.visible = false;
+
+    const totalWeight = currentDocument.histogram[0];
+    const halfWeight = totalWeight / 2;
+
+    let currentWeight = totalWeight;
+    let i = 2;
+    let direction = 1;
+
+    while (true) {
+      rectangle.translate(direction * (SIZE / i), 0);
+      currentWeight = currentDocument.histogram[0];
+      direction = currentWeight > halfWeight ? 1 : -1;
+
+      if (SIZE / i < 1) {
+        break;
+      }
+      i = i * 2;
+    }
+
+    const balanceLine = rectangle.bounds.right;
+    rectangle.delete();
+    layer1.visible = true;
+    layer2.visible = true;
   }
 
   try {
