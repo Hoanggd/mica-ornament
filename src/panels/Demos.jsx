@@ -10,10 +10,6 @@ function reverseString(str) {
 
 export const Demos = () => {
   const [selectedFolder, setSelectedFolder] = useState();
-  console.log(
-    "🚀 ~ file: Demos.jsx:8 ~ Demos ~ selectedFolder:",
-    selectedFolder?.nativePath
-  );
   const [selectedFiles, setSelectedFiles] = useState();
   const numberOfFiles = selectedFiles?.length || 0;
 
@@ -31,7 +27,7 @@ export const Demos = () => {
   };
 
   const handleCreate = () => {
-    createSafeZoneFromPngs(selectedFiles);
+    createSafeZoneFromPngs(selectedFiles, selectedFolder);
   };
 
   return (
@@ -72,7 +68,7 @@ export const Demos = () => {
       </div>
       <sp-button
         onClick={handleCreate}
-        disabled={undefined}
+        disabled={selectedFolder && selectedFiles ? undefined : true}
         style={{ marginTop: 20, width: "100%" }}
       >
         Create

@@ -12,7 +12,7 @@ const findLayerByName = (name) => {
   return app.activeDocument.layers.find((item) => item.name === name);
 };
 
-export const createSafeZoneFromPngs = async (files) => {
+export const createSafeZoneFromPngs = async (files, folder) => {
   async function processFile(file) {
     await app.open(file);
 
@@ -114,6 +114,9 @@ export const createSafeZoneFromPngs = async (files) => {
     layer2.visible = true;
 
     // Save file and close document
+    const entry = await folder.createEntry(currentDocument.name);
+    await currentDocument.saveAs.png(entry);
+    currentDocument.closeWithoutSaving();
   }
 
   try {
