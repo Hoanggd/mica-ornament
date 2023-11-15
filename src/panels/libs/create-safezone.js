@@ -1,6 +1,7 @@
 import { flatten, sortBy } from "lodash";
 import { createStrokeAndAddRect } from "./create-stroke";
 import { makeWorkPath } from "./make-work-path";
+import { makeCircle } from "./make-circle";
 
 const app = require("photoshop").app;
 const core = require("photoshop").core;
@@ -103,6 +104,10 @@ export const createSafeZoneFromPng = async (file) => {
       .map((item) => item.anchor);
     const highestBalancePoint = sortBy(balancePoints, (point) => point[1])[0];
 
+    // 7. Make circle
+    makeCircle(highestBalancePoint)
+
+    path.deselect();
     rectangle.delete();
     layer1.visible = true;
     layer2.visible = true;
