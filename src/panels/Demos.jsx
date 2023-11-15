@@ -39,6 +39,7 @@ export const Demos = () => {
     await createSafeZoneFromPngs(selectedFiles, selectedFolder);
     setSelectedFiles(undefined);
     setSelectedFolder(undefined);
+
     app.showAlert("Tạo safezone thành công!");
   };
 

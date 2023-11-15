@@ -133,6 +133,9 @@ export const createSafeZoneFromPngs = async (files, folder) => {
           });
           await processFile(value);
         }
+
+        // create empty document to preserve plugin panel
+        await app.createDocument();
       },
       {
         command: "opening file",
