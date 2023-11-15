@@ -8,6 +8,14 @@ function reverseString(str) {
   return str.split("").reverse().join("");
 }
 
+const CheckMark = () => (
+  <sp-icon
+    size="l"
+    style={{ color: "#22c55e", paddingTop: 2 }}
+    name="ui:CheckmarkMedium"
+  ></sp-icon>
+);
+
 export const Demos = () => {
   const [selectedFolder, setSelectedFolder] = useState();
   const [selectedFiles, setSelectedFiles] = useState();
@@ -26,15 +34,17 @@ export const Demos = () => {
     setSelectedFolder(folder);
   };
 
-  const handleCreate = () => {
-    createSafeZoneFromPngs(selectedFiles, selectedFolder);
+  const handleCreate = async () => {
+    await createSafeZoneFromPngs(selectedFiles, selectedFolder);
+    setSelectedFiles(undefined);
+    setSelectedFolder(undefined);
   };
 
   return (
     <div>
       <div>
         <sp-heading size="XXS" style={{ margin: 0 }}>
-          Files{" "}
+          Files {!!numberOfFiles && <CheckMark />}
         </sp-heading>
         <sp-body size="XS" style={{ margin: 0 }}>
           {numberOfFiles} file{numberOfFiles === 1 ? "" : "s"} selected
@@ -50,7 +60,7 @@ export const Demos = () => {
       </div>
       <div style={{ marginTop: 16 }}>
         <sp-heading size="XXS" style={{ margin: 0 }}>
-          Output folder{" "}
+          Output folder {!!selectedFolder && <CheckMark />}
         </sp-heading>
         {selectedFolder?.nativePath && (
           <sp-body size="XS" style={{ margin: 0 }}>

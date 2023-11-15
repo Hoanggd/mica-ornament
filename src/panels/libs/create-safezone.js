@@ -114,7 +114,9 @@ export const createSafeZoneFromPngs = async (files, folder) => {
     layer2.visible = true;
 
     // Save file and close document
-    const entry = await folder.createEntry(currentDocument.name);
+    const entry = await folder.createEntry(currentDocument.name, {
+      overwrite: true,
+    });
     await currentDocument.saveAs.png(entry);
     currentDocument.closeWithoutSaving();
   }
@@ -123,6 +125,7 @@ export const createSafeZoneFromPngs = async (files, folder) => {
     return await core.executeAsModal(
       async (executionContext) => {
         for (const [i, value] of files.entries()) {
+          app.documents.forEach((document) => document.closeWithoutSaving());
           await processFile(value);
           executionContext.reportProgress({ value: (i + 1) / files.length });
         }
