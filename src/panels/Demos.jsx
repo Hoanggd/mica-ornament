@@ -48,9 +48,11 @@ export const Demos = () => {
         <sp-heading size="XXS" style={{ margin: 0 }}>
           Files {!!numberOfFiles && <CheckMark />}
         </sp-heading>
-        <sp-body size="XS" style={{ margin: 0 }}>
-          {numberOfFiles} file{numberOfFiles === 1 ? "" : "s"} selected
-        </sp-body>
+        {!!numberOfFiles && (
+          <sp-body size="XS" style={{ margin: 0 }}>
+            {numberOfFiles} file{numberOfFiles === 1 ? "" : "s"} selected
+          </sp-body>
+        )}
         <sp-button
           size="s"
           variant="primary"

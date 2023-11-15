@@ -8,6 +8,7 @@ const core = require("photoshop").core;
 const constants = require("photoshop").constants;
 
 const SIZE = 1772;
+
 const findLayerByName = (name) => {
   return app.activeDocument.layers.find((item) => item.name === name);
 };
@@ -63,10 +64,10 @@ export const createSafeZoneFromPngs = async (files, folder) => {
     currentDocument.guides.add(constants.Direction.VERTICAL, SIZE * 2.5);
     currentDocument.guides.add(constants.Direction.VERTICAL, SIZE * 3);
 
-    // 5. Create stroke
+    // Create stroke
     await createStrokeAndAddRect();
 
-    // 6. Find hole position
+    // Find hole position
     const layer1 = findLayerByName("Layer 1");
     const layer2 = findLayerByName("Layer 1 copy");
     const rectangle = findLayerByName("Rectangle 1");
@@ -124,10 +125,13 @@ export const createSafeZoneFromPngs = async (files, folder) => {
   try {
     return await core.executeAsModal(
       async (executionContext) => {
+        app.documents.forEach((document) => document.closeWithoutSaving());
         for (const [i, value] of files.entries()) {
-          app.documents.forEach((document) => document.closeWithoutSaving());
+          executionContext.reportProgress({
+            value: (i + 1) / files.length,
+            commandName: `Processing ${i + 1}/${files.length}`,
+          });
           await processFile(value);
-          executionContext.reportProgress({ value: (i + 1) / files.length });
         }
       },
       {
