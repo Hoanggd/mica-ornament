@@ -1,4 +1,6 @@
+import { flatten, sortBy } from "lodash";
 import { createStrokeAndAddRect } from "./create-stroke";
+import { makeWorkPath } from "./make-work-path";
 
 const app = require("photoshop").app;
 const core = require("photoshop").core;
@@ -22,7 +24,7 @@ export const createSafeZoneFromPng = async (file) => {
     await currentDocument.trim();
     const width = currentDocument.width;
     const height = currentDocument.height;
-    const ratio = (SIZE - 112) / Math.max(width, height);
+    const ratio = (SIZE - 280) / Math.max(width, height);
     await currentDocument.resizeImage(width * ratio, height * ratio, 150);
     await currentDocument.resizeCanvas(
       SIZE,
@@ -89,7 +91,18 @@ export const createSafeZoneFromPng = async (file) => {
       i = i * 2;
     }
 
+    await makeWorkPath();
+
     const balanceLine = rectangle.bounds.right;
+    const path = currentDocument.pathItems.getByName("Work Path");
+    const pathPoints = flatten(
+      path.subPathItems.map((item) => item.pathPoints)
+    );
+    const balancePoints = pathPoints
+      .filter((point) => Math.abs(point.anchor[0] - balanceLine) < 20)
+      .map((item) => item.anchor);
+    const highestBalancePoint = sortBy(balancePoints, (point) => point[1])[0];
+
     rectangle.delete();
     layer1.visible = true;
     layer2.visible = true;
