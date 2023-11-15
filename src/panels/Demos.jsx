@@ -43,46 +43,51 @@ export const Demos = () => {
   };
 
   return (
-    <div>
+    <div style={{ padding: "0 6px" }}>
       <div>
-        <sp-heading size="XXS" style={{ margin: 0 }}>
+        <sp-heading
+          size="XS"
+          style={{ margin: 0, fontSize: 15, lineHeight: 1.4 }}
+        >
           Files (.png) {!!numberOfFiles && <CheckMark />}
         </sp-heading>
         {!!numberOfFiles && (
-          <sp-body size="XS" style={{ margin: 0 }}>
+          <sp-body size="S" style={{ margin: 0 }}>
             Đã chọn {numberOfFiles} file
           </sp-body>
         )}
         <sp-button
-          size="s"
           variant="primary"
           onClick={selectFiles}
-          style={{ marginRight: 6, width: 100, marginTop: 4 }}
+          style={{ marginRight: 6, width: 120, marginTop: 4 }}
         >
           Chọn file
         </sp-button>
       </div>
       <div style={{ marginTop: 16 }}>
-        <sp-heading size="XXS" style={{ margin: 0 }}>
+        <sp-heading
+          size="XS"
+          style={{ margin: 0, fontSize: 15, lineHeight: 1.4 }}
+        >
           Thư mục lưu file {!!selectedFolder && <CheckMark />}
         </sp-heading>
         {selectedFolder?.nativePath && (
-          <sp-body size="XS" style={{ margin: 0 }}>
+          <sp-body size="S" style={{ margin: 0 }}>
             {reverseString(truncate(reverseString(selectedFolder?.nativePath)))}
           </sp-body>
         )}
         <sp-button
-          size="s"
           variant="primary"
           onClick={selectFolder}
-          style={{ marginRight: 6, width: 100, marginTop: 4 }}
+          style={{ marginRight: 6, width: 120, marginTop: 4 }}
         >
           Chọn thư mục
         </sp-button>
       </div>
       <sp-button
+        size="L"
         onClick={handleCreate}
-        disabled={selectedFolder && selectedFiles ? undefined : true}
+        disabled={selectedFolder && selectedFiles?.length ? undefined : true}
         style={{ marginTop: 20, width: "100%" }}
       >
         Bắt đầu
