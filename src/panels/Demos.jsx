@@ -39,18 +39,18 @@ export const Demos = () => {
     await createSafeZoneFromPngs(selectedFiles, selectedFolder);
     setSelectedFiles(undefined);
     setSelectedFolder(undefined);
-    app.showAlert("Safezone created sucessfully!");
+    app.showAlert("Tạo safezone thành công!");
   };
 
   return (
     <div>
       <div>
         <sp-heading size="XXS" style={{ margin: 0 }}>
-          Files {!!numberOfFiles && <CheckMark />}
+          Files (.png) {!!numberOfFiles && <CheckMark />}
         </sp-heading>
         {!!numberOfFiles && (
           <sp-body size="XS" style={{ margin: 0 }}>
-            {numberOfFiles} file{numberOfFiles === 1 ? "" : "s"} selected
+            Đã chọn {numberOfFiles} file
           </sp-body>
         )}
         <sp-button
@@ -59,12 +59,12 @@ export const Demos = () => {
           onClick={selectFiles}
           style={{ marginRight: 6, width: 100, marginTop: 4 }}
         >
-          Choose Files
+          Chọn file
         </sp-button>
       </div>
       <div style={{ marginTop: 16 }}>
         <sp-heading size="XXS" style={{ margin: 0 }}>
-          Output folder {!!selectedFolder && <CheckMark />}
+          Thư mục lưu file {!!selectedFolder && <CheckMark />}
         </sp-heading>
         {selectedFolder?.nativePath && (
           <sp-body size="XS" style={{ margin: 0 }}>
@@ -77,7 +77,7 @@ export const Demos = () => {
           onClick={selectFolder}
           style={{ marginRight: 6, width: 100, marginTop: 4 }}
         >
-          Choose Folder
+          Chọn thư mục
         </sp-button>
       </div>
       <sp-button
@@ -85,7 +85,7 @@ export const Demos = () => {
         disabled={selectedFolder && selectedFiles ? undefined : true}
         style={{ marginTop: 20, width: "100%" }}
       >
-        Create
+        Bắt đầu
       </sp-button>
     </div>
   );

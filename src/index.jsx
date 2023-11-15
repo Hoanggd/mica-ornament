@@ -45,9 +45,6 @@ entrypoints.setup({
       /* optional */ console.log("destroyed");
     },
   },
-  commands: {
-    showAbout: aboutController,
-  },
   panels: {
     demos: demosController,
   },

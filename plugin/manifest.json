@@ -24,17 +24,6 @@
   },
   "entrypoints": [
     {
-      "type": "command",
-      "id": "showAbout",
-      "label": {
-        "default": "About React Demo"
-      },
-      "shortcut": {
-        "mac": "shift+cmd+A",
-        "win": "ctrl+alt+A"
-      }
-    },
-    {
       "type": "panel",
       "id": "demos",
       "label": {

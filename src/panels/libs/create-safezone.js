@@ -129,7 +129,7 @@ export const createSafeZoneFromPngs = async (files, folder) => {
         for (const [i, value] of files.entries()) {
           executionContext.reportProgress({
             value: (i + 1) / files.length,
-            commandName: `Processing ${i + 1}/${files.length}`,
+            commandName: `Đang xử lí ${i + 1}/${files.length}`,
           });
           await processFile(value);
         }
