@@ -3,6 +3,7 @@ import { createSafeZoneFromPngs } from "./libs/create-safezone";
 import { truncate } from "lodash";
 const fs = require("uxp").storage.localFileSystem;
 const fileTypes = require("uxp").storage.fileTypes;
+const app = require("photoshop").app;
 
 function reverseString(str) {
   return str.split("").reverse().join("");
@@ -38,6 +39,7 @@ export const Demos = () => {
     await createSafeZoneFromPngs(selectedFiles, selectedFolder);
     setSelectedFiles(undefined);
     setSelectedFolder(undefined);
+    app.showAlert("Safezone created sucessfully!");
   };
 
   return (
