@@ -43,43 +43,55 @@ export const Demos = () => {
   };
 
   return (
-    <div style={{ padding: "0 6px" }}>
+    <div style={{ padding: "0 8px" }}>
       <div>
         <sp-heading
           size="XS"
-          style={{ margin: 0, fontSize: 15, lineHeight: 1.4 }}
+          style={{ margin: 0, fontSize: 14, lineHeight: 1.4 }}
         >
           Files (.png) {!!numberOfFiles && <CheckMark />}
         </sp-heading>
         {!!numberOfFiles && (
-          <sp-body size="S" style={{ margin: 0 }}>
+          <sp-body size="S" style={{ margin: 0, lineHeight: 1 }}>
             Đã chọn {numberOfFiles} file
           </sp-body>
         )}
         <sp-button
-          variant="primary"
+          variant="secondary"
           onClick={selectFiles}
-          style={{ marginRight: 6, width: 120, marginTop: 4 }}
+          style={{
+            marginRight: 6,
+            width: 120,
+            marginTop: 4,
+            width: "100%",
+            borderRadius: 8,
+          }}
         >
           Chọn file
         </sp-button>
       </div>
-      <div style={{ marginTop: 16 }}>
+      <div style={{ marginTop: 12 }}>
         <sp-heading
           size="XS"
-          style={{ margin: 0, fontSize: 15, lineHeight: 1.4 }}
+          style={{ margin: 0, fontSize: 14, lineHeight: 1.4 }}
         >
           Thư mục lưu file {!!selectedFolder && <CheckMark />}
         </sp-heading>
         {selectedFolder?.nativePath && (
-          <sp-body size="S" style={{ margin: 0 }}>
+          <sp-body size="S" style={{ margin: 0, lineHeight: 1 }}>
             {reverseString(truncate(reverseString(selectedFolder?.nativePath)))}
           </sp-body>
         )}
         <sp-button
-          variant="primary"
+          variant="secondary"
           onClick={selectFolder}
-          style={{ marginRight: 6, width: 120, marginTop: 4 }}
+          style={{
+            marginRight: 6,
+            width: 120,
+            marginTop: 4,
+            width: "100%",
+            borderRadius: 8,
+          }}
         >
           Chọn thư mục
         </sp-button>
@@ -88,7 +100,7 @@ export const Demos = () => {
         size="L"
         onClick={handleCreate}
         disabled={selectedFolder && selectedFiles?.length ? undefined : true}
-        style={{ marginTop: 20, width: "100%" }}
+        style={{ marginTop: 18, width: "100%", borderRadius: 8 }}
       >
         Bắt đầu
       </sp-button>
