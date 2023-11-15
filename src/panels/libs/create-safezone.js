@@ -12,15 +12,15 @@ const findLayerByName = (name) => {
   return app.activeDocument.layers.find((item) => item.name === name);
 };
 
-export const createSafeZoneFromPng = async (file) => {
-  async function openDocument() {
+export const createSafeZoneFromPngs = async (files) => {
+  async function processFile(file) {
     await app.open(file);
 
-    // 1. Rename
+    // Rename
     const currentDocument = app.activeDocument;
     let activeLayer = currentDocument.activeLayers[0];
 
-    // 2. Image Size
+    // Image Size
     await currentDocument.revealAll();
     await currentDocument.trim();
     const width = currentDocument.width;
@@ -38,7 +38,7 @@ export const createSafeZoneFromPng = async (file) => {
       constants.AnchorPosition.MIDDLELEFT
     );
 
-    // 3. Duplicate layer
+    // Duplicate layer
     await activeLayer.duplicate();
     await activeLayer.translate(
       { _unit: "pixelsUnit", _value: SIZE },
@@ -51,7 +51,7 @@ export const createSafeZoneFromPng = async (file) => {
       { _unit: "pixelsUnit", _value: 0 }
     );
 
-    // 4. Add guides
+    // Add guides
     currentDocument.guides.add(constants.Direction.HORIZONTAL, 0);
     currentDocument.guides.add(constants.Direction.HORIZONTAL, SIZE / 2);
     currentDocument.guides.add(constants.Direction.HORIZONTAL, SIZE);
@@ -104,19 +104,30 @@ export const createSafeZoneFromPng = async (file) => {
       .map((item) => item.anchor);
     const highestBalancePoint = sortBy(balancePoints, (point) => point[1])[0];
 
-    // 7. Make circle
-    makeCircle(highestBalancePoint)
+    // Make circle
+    makeCircle(highestBalancePoint);
 
+    // Show all layer
     path.deselect();
     rectangle.delete();
     layer1.visible = true;
     layer2.visible = true;
+
+    // Save file and close document
   }
 
   try {
-    return await core.executeAsModal(openDocument, {
-      command: "opening file",
-    });
+    return await core.executeAsModal(
+      async (executionContext) => {
+        for (const [i, value] of files.entries()) {
+          await processFile(value);
+          executionContext.reportProgress({ value: (i + 1) / files.length });
+        }
+      },
+      {
+        command: "opening file",
+      }
+    );
   } catch (error) {
     console.log("error opening file as document", error);
   }

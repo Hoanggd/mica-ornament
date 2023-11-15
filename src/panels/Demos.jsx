@@ -1,9 +1,19 @@
 import React, { useState } from "react";
-import { createSafeZoneFromPng } from "./libs/create-safezone";
+import { createSafeZoneFromPngs } from "./libs/create-safezone";
+import { truncate } from "lodash";
 const fs = require("uxp").storage.localFileSystem;
 const fileTypes = require("uxp").storage.fileTypes;
 
+function reverseString(str) {
+  return str.split("").reverse().join("");
+}
+
 export const Demos = () => {
+  const [selectedFolder, setSelectedFolder] = useState();
+  console.log(
+    "🚀 ~ file: Demos.jsx:8 ~ Demos ~ selectedFolder:",
+    selectedFolder?.nativePath
+  );
   const [selectedFiles, setSelectedFiles] = useState();
   const numberOfFiles = selectedFiles?.length || 0;
 
@@ -15,8 +25,13 @@ export const Demos = () => {
     setSelectedFiles(files);
   };
 
+  const selectFolder = async () => {
+    const folder = await fs.getFolder();
+    setSelectedFolder(folder);
+  };
+
   const handleCreate = () => {
-    selectedFiles.forEach((file) => createSafeZoneFromPng(file));
+    createSafeZoneFromPngs(selectedFiles);
   };
 
   return (
@@ -25,35 +40,35 @@ export const Demos = () => {
         <sp-heading size="XXS" style={{ margin: 0 }}>
           Files{" "}
         </sp-heading>
-        <div style={{ display: "flex", alignItems: "center", marginTop: 8 }}>
-          <sp-button
-            size="s"
-            variant="primary"
-            onClick={selectFiles}
-            style={{ marginRight: 6, width: 100 }}
-          >
-            Choose Files
-          </sp-button>
-          <sp-body size="XS" style={{ margin: 0 }}>
-            {numberOfFiles} file{numberOfFiles === 1 ? "" : "s"} selected
-          </sp-body>
-        </div>
+        <sp-body size="XS" style={{ margin: 0 }}>
+          {numberOfFiles} file{numberOfFiles === 1 ? "" : "s"} selected
+        </sp-body>
+        <sp-button
+          size="s"
+          variant="primary"
+          onClick={selectFiles}
+          style={{ marginRight: 6, width: 100, marginTop: 4 }}
+        >
+          Choose Files
+        </sp-button>
       </div>
-      <div>
-        <sp-heading size="XXS">Output folder </sp-heading>
-        <div style={{ display: "flex", alignItems: "center", marginTop: 8 }}>
-          <sp-button
-            size="s"
-            variant="primary"
-            onClick={selectFiles}
-            style={{ marginRight: 6, width: 100 }}
-          >
-            Choose Folder
-          </sp-button>
+      <div style={{ marginTop: 16 }}>
+        <sp-heading size="XXS" style={{ margin: 0 }}>
+          Output folder{" "}
+        </sp-heading>
+        {selectedFolder?.nativePath && (
           <sp-body size="XS" style={{ margin: 0 }}>
-            /output
+            {reverseString(truncate(reverseString(selectedFolder?.nativePath)))}
           </sp-body>
-        </div>
+        )}
+        <sp-button
+          size="s"
+          variant="primary"
+          onClick={selectFolder}
+          style={{ marginRight: 6, width: 100, marginTop: 4 }}
+        >
+          Choose Folder
+        </sp-button>
       </div>
       <sp-button
         onClick={handleCreate}
